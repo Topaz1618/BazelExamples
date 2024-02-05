@@ -1,0 +1,28 @@
+load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
+
+py_binary(
+    name = "apps",
+    srcs = ["apps.py"],
+    data = [":template_files", ":static_files", "test_tar"],
+)
+
+
+filegroup(
+    name = "template_files",
+    srcs = glob(["templates/index.html"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "static_files",
+    srcs = glob(["static/**"]),
+    visibility = ["//visibility:public"],
+)
+
+pkg_tar(
+    name = "test_tar",
+    #srcs = glob(["*"]),
+    srcs = [":apps", ":template_files", ":static_files"],
+)
+
+

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/highlight/styles/tokyo-night-dark.min.css">
+    <style>
+        .code-block {
+            /*border: 1px solid #ddd;*/
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            width: 800px;
+
+        }
+
+        .code-header {
+            background-color: #343542;
+            color: #9aa5ce;
+            font-size: 12px;
+            padding: 8px;
+            margin-bottom: -28px;
+            /*border-bottom: 1px solid #ddd;*/
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 10px;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+        }
+
+        .language {
+            font-weight: bold;
+        }
+
+        .copy-button {
+            height: 20px;
+            padding: 4px 8px;
+            background-color: #343542;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            gap: 0.5rem;
+            display: inherit;
+        }
+        .code{
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .bot {
+            background-color: #f1f1f1;
+            padding: 10px;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+        }
+
+
+        .user {
+            /*background-color: #f1f1f1;*/
+            padding: 10px;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- Your HTML content here -->
+    <!-- Code blocks will be added later -->
+    <div id="chat">
+
+        <div id="bot_model" class="bot">
+
+        </div>
+    </div>
+
+
+    <div id="code_model" class="code-block" >
+        <div class="code-header">
+            <span id="programming_language" class="language">JavaScript</span>
+
+            <button class="copy-button" onclick="copyContent()">
+                <svg style="height: 16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V5C19 3.89543 18.1046 3 17 3Z"></path>
+  <path d="M15 1H9C7.89543 1 7 1.89543 7 3V5H17V3C17 1.89543 16.1046 1 15 1Z"></path>
+  <path d="M8 9H16"></path>
+</svg>
+
+                <span style="height: 16px"> Copy code </span>
+            </button>
+
+        </div>
+        <pre>
+            <code id="code" class="code language-javascript">
+function greet() {
+    console.log("Hello, World!");
+}
+            </code>
+        </pre>
+        </div>
+
+</body>
+</html>
+
+<script src="/static/highlight/highlight.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script>
+    // Initialize and trigger syntax highlighting
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('pre code').forEach(function(block) {
+            hljs.highlightBlock(block);
+        });
+    });
+
+    // Add copy code functionality
+        function copyContent() {
+            var CodeToCopy = document.getElementById('code');
+            // CodeToCopy.setSelectionRange(0, CodeToCopy.value.length);
+            var content = CodeToCopy.innerText;
+
+            navigator.clipboard.writeText(content)
+              .then(function() {
+                  var button = document.querySelector('.copy-button');
+                  var originalText = button.innerHTML;
+
+                  button.innerHTML = "✔️ Copied";
+                  button.style.height = "26px"
+                  button.style.lineHeight = "20px";
+                  setTimeout(function() {
+                    button.innerHTML = originalText;
+                  }, 2000); // 2秒后恢复原始文本
+              })
+              .catch(function(error) {
+                console.error('复制失败：', error);
+              });
+        }
+
+    function ChatBox(){
+
+    }
+
+    function CodeBlock(){
+
+    }
+
+    function GetConversationHistory(){
+
+            $.ajax({
+              url: '/conversation_history',
+              method: 'GET',
+
+                success: function(data) {
+                  // Handle the retrieved data
+
+                  data = data["data"];
+                  var chat_section =  document.getElementById("chat")
+                  for (let i=0; i<data.length; i++){
+                     console.log(data[i])
+                      if (data[i]["role"] == "system"){
+                          console.log(data[i]["content"])
+                      }
+                      else if (data[i]["role"] == "user"){
+                          console.log(data[i]["content"])
+                          var user_model = document.createElement("div")
+                          user_model.className = "user";
+                          user_model.id = "user_" + i;
+                          var user_content = document.createElement("div");
+                          user_content.style.width = "60%";
+                          user_content.style.marginLeft = "20%";
+                          // user_content.style.marginTop = "-40px";
+                          user_content.innerHTML = data[i]["content"];
+                          user_model.appendChild(user_content);
+                          chat_section.appendChild(user_model);
+                      }
+                       else if (data[i]["role"] == "assistant"){
+                          console.log(data[i]["content"])
+                          var elementToCopy = document.getElementById('bot_model');
+                          var bot_model = elementToCopy.cloneNode(true);
+                          var bot_content = document.createElement("div");
+                          bot_content.style.width = "60%";
+                          bot_content.style.marginLeft = "20%";
+                          bot_content.style.marginTop = "-40px";
+
+                          if (data[i]["content"].includes('```')){
+                                var sections = data[i]["content"].split('```');
+                                console.log("!!!!!!", sections[0])
+
+
+                                var codeModelElement = document.getElementById('code_model');
+                                var codeNodeElement = codeModelElement.cloneNode(true);
+                                // codeNodeElement.id = "code_" + i;
+                                // var programmingLanguageElement = codeNodeElement.childNodes[1].childNodes[1];
+
+                                // var programming_language = sections[1].split("\n")[0]
+                                // programmingLanguageElement.innerHTML = programming_language;
+                                // var codeElement = codeNodeElement.querySelector('.code');
+                                // codeElement.innerHTML = sections[1];
+                                bot_content.innerHTML = sections[0];
+                                bot_content.appendChild(codeNodeElement)
+                                bot_content.innerHTML += sections[2];
+
+                          }else{
+                              bot_content.innerHTML = data[i]["content"];
+                          }
+
+                          bot_model.appendChild(bot_content)
+                          bot_model.id =  "assistant_" + i;
+                          chat_section.appendChild(bot_model);
+                      }
+                  }
+
+
+                },
+                error: function(xhr, status, error) {
+                  // Handle any errors that occurred during the request
+                  console.error('Error:', error);
+                }
+            });
+
+
+    }
+
+    GetConversationHistory()
+
+</script>
