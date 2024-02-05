@@ -1,0 +1,45 @@
+<ul class="pag pag-light justify-content-center">
+  <li class="pag-item  pag-mobile-hide"><a class="pag-link pag-link-start" href="{{ page_url }}?current_page=1"><span class="pag-icon mdi-chevron-double-left novi-icon"></span><span>First</span></a>
+  </li>
+
+
+         {% if  total_pages > 5 and current_page > 1 and  current_page + 2 >= total_pages  and current_page <= total_pages %}
+                <li class="pag-item"><a class="pag-link" href="{{ page_url }}?current_page=1">1</a></li>
+                <li class="pag-item"><span class="inactive pag-link">...</span></li>
+         {% end %}
+
+
+         {% if  total_pages == 0 %}
+                <li class="pag-item active"><a class="pag-link" href="#">1</a></li>
+         {% end %}
+
+
+
+        {% for page in page_list %}
+
+            {% if page == current_page %}
+                <li class="pag-item active"><a class="pag-link" href="#">{{ page }}</a></li>
+            {% else %}
+
+                <li class="pag-item"><a class="pag-link" href="{{ page_url }}?current_page={{ page }}">{{ page }}</a></li>
+
+            {% end %}
+
+
+        {% end %}
+
+            {% if total_pages >5 and current_page + 3 <= total_pages %}
+                <li class="pag-item"><span class="inactive pag-link">...</span>
+                </li>
+            {% end %}
+
+            {% if total_pages >5 and  current_page + 3 <= total_pages %}
+
+            <li class="pag-item"><a class="pag-link" href="{{ page_url }}?current_page={{ page }}">{{ total_pages }}</a>
+            </li>
+            {% end %}
+
+
+        <li class="pag-item pag-mobile-hide"><a class="pag-link pag-link-end" href="{{ page_url }}?current_page={{ total_pages }}"><span>Last</span><span class="pag-icon mdi-chevron-double-right novi-icon"></span></a>
+        </li>
+</ul>

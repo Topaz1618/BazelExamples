@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .chat-container {
+         height: 500px; /* 设置 chatContainer 的高度 */
+        overflow-y: scroll; /* 添加滚动条，使内容超出高度时可滚动 */
+    }
+    </style>
+</head>
+<body>
+<!--{{ data }}-->
+
+<div id="ChatSection" class="chat-container" >
+
+{% for idx, d in enumerate(data) %}
+    <div style="height: 30px; margin: 10px;"> {{idx}} {{ d }} </div>
+
+{% end %}
+</div>
+
+<div>
+
+</div>
+</body>
+</html>
+
+
+<script src="/static/js/jquery.min.js"></script>
+<script>
+// JavaScript code
+$(document).ready(function() {
+  // 将 chatContainer 滚动到最底部
+  var chatContainer = document.getElementById("ChatSection");
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+});
+
+
+var chatContainer = document.getElementById("ChatSection");
+var threshold = 500; // Adjust this value to set the scroll threshold
+var prevScrollTop = chatContainer.scrollTop;
+
+
+// Function to check if user has scrolled beyond threshold
+function checkScroll() {
+  var scrollTop = chatContainer.scrollTop;
+  if (prevScrollTop > scrollTop && prevScrollTop - scrollTop >= threshold) {
+    console.log("用户向上滑动超过指定高度！");
+    // 在此执行其他操作
+  }
+  prevScrollTop = scrollTop; // 更新上一次的滚动位置
+}
+
+
+// Attach scroll event listener to the chatContainer
+// chatContainer.addEventListener("scroll", checkScroll);
+
+</script>

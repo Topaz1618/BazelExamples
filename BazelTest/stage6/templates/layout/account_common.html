@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "../partials/_account_head.html" %}
+
+    {# Body #}
+    {% block content %}
+        {# Content #}
+    {% end %}
+
+</html>
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.validate.min.js"></script>
+<script src="/static/js/additional-methods.min.js"></script>
+<script src='/static/js/particles.js' type="text/javascript"></script>
+
+
+<script type="text/javascript">
+        var InterValObj;
+        var count = 60;
+        var curCount;
+
+
+        function phonenumListen(obj) {
+            var val = obj.value;
+            var re = /^1\d{10}$/;
+            if (re.test(val)) {
+                $('.form-warning').html("<a>成功</a>");
+            } else {
+                $('.form-warning').html("<a>请输入手机号</a>");
+            }
+        }
+
+        function emailListen(obj){
+            var val = obj.value;
+            var re  = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+            if(re.test(val)){
+                $('.form-warning').html("<a> </a>");
+            }else{
+                $('.form-warning').html("<a>格式不正确</a>");
+            }
+        }
+
+        function passwordListen(obj) {
+            var val = obj.value;
+            var formWarning = obj.previousElementSibling;
+            {#var re = /^[A-za-z]\w{5,19}$/;#}
+            var re = /^[A-Za-z0-9@#$%^&+=]{8,16}$/;
+            if (re.test(val)) {
+                formWarning.innerHTML = "<a>密码格式正确</a>"
+                $('.form-warning').fadeOut(2000, function() {
+                    $(this).empty();
+                });
+            } else {
+                formWarning.innerHTML = "请输入8-16个字符"
+            }
+        }
+
+        function passwordMatch(obj) {
+            var val1 = obj.value;
+            var val2 = document.getElementById('password').value;
+
+
+            var formWarning = obj.previousElementSibling;
+
+            if (val1 == val2) {
+                formWarning.innerHTML = "<a> </a>";
+                {#document.getElementById("password").previousElementSibling.innerHTML = "<a> </a>";#}
+                {#formWarning.innerHTML = "<a> 密码匹配 </a>"#}
+            } else {
+                formWarning.innerHTML = "<a>两次密码不一致</a>"
+
+            }
+        }
+
+        function sendCode() {
+            curCount = count;
+            $("#verifybutton").attr("disabled", "true");
+            $("#verifybutton").html(curCount + "秒后可重新获取");
+            InterValObj = window.setInterval(SetRemainTime, 1000);
+            var username = $("#username").val();
+            var usagestr = $("#usage").val();
+            var usage = parseInt(usagestr, 10);
+            $.ajax({
+                url: '/request-verifycode',
+                type: 'POST',
+                data: {"username": username, "usage": usage},
+                dataType: 'json',
+                timeout: 10000,
+                success: function (data) {
+                }
+            });
+    }
+
+        function SetRemainTime() {
+        if (curCount == 0) {
+            window.clearInterval(InterValObj);
+            $("#verifybutton").removeAttr("disabled");
+            $("#verifybutton").html("重新发送验证码");
+        }
+        else {
+            curCount--;
+            $("#verifybutton").html(curCount + "秒后可重新获取");
+        }
+    }
+
+
+        function authRegister() {
+            const formData = new FormData();
+            var username = document.getElementById("username").value;
+            var account_name = document.getElementById("account_name").value;
+            var password = document.getElementById("password").value;
+            var confirm_password = document.getElementById("confirm_password").value;
+
+            formData.append("username", username);
+            formData.append("account_name", account_name);
+            formData.append("password", password);
+            formData.append("confirm_password", confirm_password);
+            $.ajax({
+                type: "post",
+                url: "/register",
+                data: formData,
+                async: true,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    var error_code = response["error_code"];
+                    console.log(error_code);
+                    if (error_code == '1000') {
+                        alert("注册成功！");
+                        setTimeout(function() {
+                            window.location.href = "/login";
+                        }, 200);
+                        {#window.location.href = "/login";#}
+                    } else {
+                        var error_msg = response["msg"];
+                        alert(error_msg)
+
+                    }
+                },
+                error: function () {
+                    $('.form-warning').html("<a>服务器异常</a>");
+                }
+            })
+    }
+
+    function authLogin() {
+        console.log("ok")
+        const formData = new FormData();
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+
+        console.log(username, password)
+        formData.append("username", username);
+        formData.append("password", password);
+
+        $.ajax({
+            type: "post",
+            url: "/login",
+            data: formData,
+            async: true,
+            cache: false,
+            processData: false,
+            contentType: false,
+
+        success: function (data) {
+            console.log(data);
+            var res = data.error_code;
+            console.log(data.error_code);
+            if (res == '1000') {
+                console.log(">>>>");
+                window.location.href = "/"
+            } else {
+                var error_msg = data.msg;
+                alert(error_msg);
+                {#$('.form-warning').html("<a>" + error_msg + "</a>");#}
+            }
+        },
+        error: function () {
+            $('.form-warning').html("<a>服务器异常</a>");
+
+        }
+
+        })
+    }
+
+    function ResetPassword() {
+        console.log("ok")
+        const formData = new FormData();
+        var username = document.getElementById("username").value;
+        var old_password = document.getElementById("old_password").value;
+        var password = document.getElementById("password").value;
+        var confirm_password = document.getElementById("confirm_password").value;
+
+        console.log(username, password)
+        formData.append("username", username);
+        formData.append("old_password", old_password);
+        formData.append("password", password);
+        formData.append("confirm_password", confirm_password);
+
+        if (old_password == password){
+            alert("新密码请勿与旧密码相同");
+        }else{
+        $.ajax({
+            type: "post",
+            url: "/reset_password",
+            data: formData,
+            async: true,
+            cache: false,
+            processData: false,
+            contentType: false,
+
+        success: function (data) {
+            console.log(data);
+            var res = data.error_code;
+            console.log(data.error_code);
+            if (res == '1000') {
+                alert("修改成功");
+                setTimeout(function() {
+                    window.location.href = "/login";
+                }, 200);
+            } else {
+                var error_msg = data.msg;
+                alert(error_msg);
+            }
+        },
+        error: function () {
+            $('.form-warning').html("<a>服务器异常</a>");
+
+        }
+
+        })
+        }
+    }
+
+
+</script>

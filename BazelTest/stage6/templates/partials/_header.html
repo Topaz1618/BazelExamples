@@ -1,0 +1,305 @@
+<header class="section rd-navbar-wrap rd-navbar-wrap-transparent">
+    <nav id="file_system_header" class="rd-navbar rd-navbar-solid rd-navbar-transparent"
+         data-rd-navbar='{"responsive":{"1200":{"stickUpOffset":"164px"}}}' style="background-color: white">
+        <div class="navbar-section navbar-non-stuck">
+            <div class="navbar-panel">
+                <button class="navbar-switch mdi-menu novi-icon"
+                        data-multi-switch='{"targets":".rd-navbar","scope":".rd-navbar","isolate":"[data-multi-switch]"}'></button>
+                <div class="navbar-logo">
+                    <a class="navbar-navigation-root-link" href="/" style="width: 160%; font-size: 22px; font-weight: 500; margin-top: -4%;"> Bazel 测试系统 </a>
+                </div>
+            </div>
+            <div class="navbar-container">
+                <div class="navbar-cell flex-grow-1">
+                    <div class="navbar-info">
+                        <div class="list list-icons-2">
+                            <div class="list-item">
+                                <li class="navbar-navigation-root-item">
+                                    <a id="file_system_title" class="navbar-navigation-root-link" href="/"
+                                       style="font-size: 28px; font-weight: 500;"> Bazel 测试系统 </a>
+                                </li>
+                            </div>
+                        </div>
+                        <div class="navbar-logo navbar-fullwidth-logo">
+                            <a class="navbar-logo-link" href="tmp/index.html">
+                            </a>
+                        </div>
+                        <div class="text-block text-block-2 d-md-flex align-items-center justify-content-center">
+                            <div class="list list-icons-2">
+                                <div class="list-item">
+                                      {% if username == None and account_name == None%}
+                                        <a class="navbar-navigation-root-link" style="display: inline-block; " href="/login">
+                                            <span id="username" class="mdi-account-outline" style="display: inline-block"> Log in </span>
+                                        </a>
+                                        <a class="navbar-navigation-root-link" style="display: inline-block; " href="/logout">
+                                            <span id="username" class="mdi-logout" style="display: inline-block"> Log out </span>
+                                        </a>
+
+                                      {% elif account_name != None and account_name != "" %}
+                                          <a class="navbar-navigation-root-link" style="display: inline-block; " href="/user_info">
+                                              <span id="username" class="mdi-account" style="display: inline-block"> {{ account_name }} </span>
+                                          </a>
+                                          <a class="navbar-navigation-root-link" style="display: inline-block; " href="/logout">
+                                              <span id="username" class="mdi-logout" style="display: inline-block"> Log out </span>
+                                          </a>
+
+
+                                      {% else %}
+                                          <a class="navbar-navigation-root-link" style="display: inline-block; " href="/user_info">
+                                              <span id="username" class="mdi-account" style="display: inline-block"> {{ username }} </span>
+                                          </a>
+                                          <a class="navbar-navigation-root-link" style="display: inline-block; " href="/logout">
+                                              <span id="username" class="mdi-logout" style="display: inline-block"> Log out </span>
+                                          </a>
+
+                                      {% end %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="navbar-cell">
+                    <div class="navbar-subpanel">
+                        <div class="navbar-subpanel-item">
+                            <button class="navbar-button navbar-info-button mdi-dots-vertical novi-icon"
+                                    data-multi-switch='{"targets":".rd-navbar","scope":".rd-navbar","class":"navbar-info-active","isolate":"[data-multi-switch]"}'></button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar-section">
+            <div class="navbar-container navbar-sidebar" style="margin-top: 1%">
+                <div class="navbar-cell flex-grow-1" style="border-bottom: 1px solid #dde0e9;">
+                    <ul class="navbar-navigation rd-navbar-nav" style="margin-left: 58px">
+                        <li class="navbar-navigation-root-item active" style="margin-left: -58px;">
+                            <a class="navbar-navigation-root-link" style="display: inline-block; " href="/">
+                                <span class="product-btn btn topaz btn-icon mdi-home" style="display: inline-block; border: 1px solid white;">
+                                    <span> 首页 </span>
+                                </span>
+                            </a>
+                        </li>
+                            <li class="navbar-navigation-root-item active" style="margin-left: -58px;">
+                                <a class="navbar-navigation-root-link" style="display: inline-block; " href="/upload_file">
+                                    <span class="product-btn btn topaz btn-icon " style="display: inline-block; border: 1px solid white;">
+                                        <span class="mdi-cloud-circle" style="font-size: 21px;"></span>
+                                        <span style="margin-left: 1px"> 上传文件 </span>
+                                    </span>
+                                </a>
+
+
+                            </li>
+
+                        <li class="navbar-navigation-root-item" style="margin-left: -58px;">
+                            <a class="navbar-navigation-root-link" style="display: inline-block; " href="/myfiles">
+                             <span class="product-btn btn topaz btn-icon mdi-file-multiple" style="display: inline-block; border: 1px solid white;"> 文件管理 </span>
+                            </a>
+                            <ul class="navbar-navigation-dropdown rd-navbar-dropdown">
+                                <li class="navbar-navigation-back">
+                                    <button class="navbar-navigation-back-btn">Back</button>
+                                </li>
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/myfiles">
+                                         <span class="mdi-file-cloud" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 我的上传 </span>
+                                    </a>
+                                </li>
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/my_records">
+                                         <span class="mdi-file-document" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 我的下载 </span>
+                                    </a>
+                                </li>
+
+
+                            </ul>
+
+                        </li>
+
+                        {% if is_admin %}
+                            {% if is_admin == True %}
+
+                            <li class="navbar-navigation-root-item rd-navbar--has-dropdown rd-navbar-submenu" style="margin-left: -58px;">
+                            <a class="navbar-navigation-root-link" style="display: inline-block; " href="/project_management">
+                                <span class="product-btn btn topaz btn-icon mdi-bank" style="display: inline-block; border: 1px solid white">
+                                    组织管理
+                                </span>
+                            </a><span class="rd-navbar-submenu-toggle"></span>
+
+                                <ul class="navbar-navigation-dropdown rd-navbar-dropdown">
+                                <li class="navbar-navigation-back">
+                                    <button class="navbar-navigation-back-btn">Back</button>
+                                </li>
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/company_management">
+                                         <span class="mdi-laptop-mac" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 公司管理 </span>
+                                    </a>
+                                </li>
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/project_management">
+                                         <span class="mdi-folder-account" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 项目管理 </span>
+                                    </a>
+                                </li>
+
+{#                                <li class="navbar-navigation-dropdown-item">#}
+{#                                    <a class="navbar-navigation-dropdown-link" href="/organization_list">#}
+{#                                         <span class="mdi-hospital-building" style="display: inline-block; ">#}
+{##}
+{#                                         </span>#}
+{#                                        <span style="display: inline-block"> 所有组织 </span>#}
+{#                                    </a>#}
+{#                                </li>#}
+
+                            </ul>
+
+                                </li>
+
+                                <li class="navbar-navigation-root-item" style="margin-left: -58px;">
+                            <a class="navbar-navigation-root-link" style="display: inline-block; " href="/user_list">
+                             <span class="product-btn btn topaz btn-icon mdi-laptop-mac" style="display: inline-block; border: 1px solid white;"> 后台管理 </span>
+                            </a>
+                            <ul class="navbar-navigation-dropdown rd-navbar-dropdown">
+                                <li class="navbar-navigation-back">
+                                    <button class="navbar-navigation-back-btn">Back</button>
+                                </li>
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/file_list">
+                                         <span class="mdi-file-multiple" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 所有文件列表 </span>
+                                    </a>
+                                </li>
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/download_records">
+                                         <span class="mdi-download" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 所有下载记录 </span>
+                                    </a>
+                                </li>
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/create_user">
+                                         <span class="mdi-account-plus" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 创建新用户 </span>
+                                    </a>
+                                </li>
+
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/update_permission">
+                                         <span class="mdi-account-key" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 更改用户权限 </span>
+                                    </a>
+                                </li>
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/update_password">
+                                         <span class="mdi-key-variant" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 重置用户密码 </span>
+                                    </a>
+                                </li>
+
+                            <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/user_list">
+                                         <span class="mdi-account-location" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 所有用户列表 </span>
+                                    </a>
+                                </li>
+
+
+                            </ul>
+
+                        </li>
+
+                            {% end %}
+
+                        {% end %}
+
+                        <li class="navbar-navigation-root-item" style="margin-left: -58px;">
+                            <a class="navbar-navigation-root-link" style="display: inline-block; " href="/user_info">
+                             <span class="product-btn btn topaz btn-icon mdi-account" style="display: inline-block; border: 1px solid white;"> 个人信息 </span>
+                            </a>
+                            <ul class="navbar-navigation-dropdown rd-navbar-dropdown">
+                                <li class="navbar-navigation-back">
+                                    <button class="navbar-navigation-back-btn">Back</button>
+                                </li>
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/user_info">
+                                         <span class="mdi-account-location" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 我的资料 </span>
+                                    </a>
+                                </li>
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/my_organization">
+                                         <span class="mdi-office" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 我的组织 </span>
+                                    </a>
+                                </li>
+
+
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/myfiles">
+                                         <span class="mdi-file-document" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 我的文件 </span>
+                                    </a>
+                                </li>
+                                <li class="navbar-navigation-dropdown-item">
+                                    <a class="navbar-navigation-dropdown-link" href="/my_records">
+                                         <span class="mdi-download" style="display: inline-block; ">
+
+                                         </span>
+                                        <span style="display: inline-block"> 已下载文件 </span>
+                                    </a>
+                                </li>
+
+
+
+                            </ul>
+
+                        </li>
+
+
+
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</header>

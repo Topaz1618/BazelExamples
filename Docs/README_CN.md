@@ -1,4 +1,4 @@
-# GPTBot
+# BazelExamples
 
 [BazelExamples English Version](../README.md)
 

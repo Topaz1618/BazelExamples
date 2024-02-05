@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "../partials/_chat_head.html" %}
+
+<body style="overflow-y: auto;">
+
+<div class="page" style="background-color: white">
+    {% include "../partials/_chat_box.html" %}
+
+
+    {% block content %}
+<!--    -->
+    {% end  %}
+
+
+     {# Send Box #}
+    {% block send_box %}
+<!--    -->
+    {% end  %}
+
+</div>
+
+
+</body>
+</html>
+
+
+
+
+
+<script src="/static/js/jquery.min.js"></script>
+
+{% block js %}
+    {# Content #}
+{% end %}
+
+
+<script type="text/javascript">
+
+</script>

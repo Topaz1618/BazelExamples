@@ -1,0 +1,63 @@
+<div>
+<div id="chat" style="width: 102%; margin-left: -1%; ">
+    {% set counter = 0 %}
+    {% for conversation in data %}
+    {% set counter = counter + 1 %}
+
+    {% if conversation["role"] == "user" %}
+
+    <div id="user_{{ counter }}" class="user" style="border-bottom: solid 1px rgba(0,0,0,.1); color: #343541;">
+        <div style="width: 50%; margin-left: 25%; margin-top: -20px">
+            {{ conversation["content"] }}
+        </div>
+    </div>
+
+    {% elif conversation["role"] == "assistant" %}
+    {% set delimiter = '```' %}
+
+    <div id="bot_{{ counter }}" class="bot" style="border-bottom: solid 1px rgba(0,0,0,.1); color: #374151; display: flex;">
+
+        <div style="float: left; width: 50%; margin-left: 25%; margin-top: -21px; margin-bottom: -8px;">
+        {% if delimiter in conversation["content"] %}
+            {% set parts = conversation["content"].split(delimiter) %}
+            {{ parts[0] }}
+            <div id="code_model_{{ counter }}" class="code-block" style="position: relative; ">
+                <div class="code-header" style="margin-bottom: -31px;width: 100%;margin-top: -8px;height: 26px;position: absolute;z-index: 999 !important;">
+                    {% set pl_delimiter = '\n' %}
+                    {% set pl_parts = parts[1].split(pl_delimiter) %}
+                    {% set language = pl_parts[0] %}
+                    <span class="language">{{ pl_parts[0] }}</span>
+                    <button class="copy-button" onclick="copyContent(this)">
+                        <svg style="height: 16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V5C19 3.89543 18.1046 3 17 3Z"></path>
+                            <path d="M15 1H9C7.89543 1 7 1.89543 7 3V5H17V3C17 1.89543 16.1046 1 15 1Z"></path>
+                            <path d="M8 9H16"></path>
+                        </svg>
+                        <span style="height: 16px"> Copy code </span>
+                    </button>
+
+                </div>
+                <pre>
+                     <code id="code_{{ counter }}" class="code language-{{ pl_parts[0] }}" style="margin-bottom: -54px; margin-top: -58px; border-top-right-radius: 10px; border-top-left-radius: 10px;">
+                         {% set code_parts = parts[1].split(language + "\n") %}
+                         {{  code_parts[1] }}
+                     </code>
+                </pre>
+            </div>
+            {{ parts[2] }}
+
+        {% else %}
+            {{ conversation["content"] }}
+        {% end %}
+
+        </div>
+    </div>
+
+    {% end %}
+    {% end %}
+
+
+</div>
+
+</div>

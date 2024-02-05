@@ -46,7 +46,6 @@ class ChatHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         # Process the message (e.g., call OpenAI API) and send the response back
         message = json.loads(message)
-        print(message["command_type"] )
         if message["command_type"] == MessageType.COMMAND.value:
             self.gpt.generate_key_name(user="User1", prompt_type=message["payload"])
             self.gpt.init_prompt(message["payload"])

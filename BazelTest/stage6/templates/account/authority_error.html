@@ -1,0 +1,39 @@
+{% extends '../layout/base_common.html' %}
+
+
+{% block title %}
+
+    <title>账号权限错误</title>
+
+{% end %}
+
+{% block content %}
+
+        <section class="section section-md bg-primary-lightest">
+                <div class="container">
+                  <div class="row justify-content-center text-center">
+                    <div class="col-xl-11" style="margin-top:6%">
+                      <div class="icon text-primary icon-xl linearicons-sad"></div>
+{#                        {{ error_code }}#}
+                        {% if error_code == "5000" %}            <!-- 增加了一个判断语句 -->
+                            <div class="title-1">Error User login</div>
+                            <h3>The current page must be logged in to access :(</h3>
+			    <p class="d-inline-block" style="max-width:750px">用户未登录/出现变更, 请登录后再进行访问.</p>
+                        {% else %}
+
+                            {% if error_code != "5000" and error_code != "5006" and error_code != "5007" %}            <!-- 增加了一个判断语句 -->
+                                <div class="title-1">{{ error_message }}</div>
+                            {% end %}
+
+                        {% end %}
+                        <div class="btn-group-1"><a class="btn btn-lg btn-primary" href="/login">登录</a></div>
+{#                         <div class="btn-group-1"><a class="btn btn-lg btn-primary" href="/">Home</a></div>#}
+
+                    </div>
+                  </div>
+                </div>
+        </section>
+
+
+{% end %}
+

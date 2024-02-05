@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+
+    <style>
+        .bot {
+            background-color: #f1f1f1;
+            padding: 10px;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+        }
+
+
+        .user {
+            background-color: #f1f1f1;
+            padding: 10px;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="chat">
+        <div id="messages">
+
+        {% for message in data %}
+<!--            {{ message }}-->
+            {% if message["role"] == 'system' %}
+                <br>
+            {% elif message["role"] == 'user' %}
+                <p>{{ message["content"] }}</p>
+            {% elif message["role"] == 'assistant' %}
+                <div class="bot">
+                    <pre>{{ message["content"] }}</pre>
+                </div>
+            {% end %}
+        {% end %}
+
+        </div>
+
+        <input type="text" id="chat_input" placeholder="Type your question..." />
+        <button id="sendButton">Send</button>
+    </div>
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>

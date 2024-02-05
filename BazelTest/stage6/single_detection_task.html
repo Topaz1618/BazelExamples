@@ -1,0 +1,104 @@
+{% extends 'layout/detection_common.html' %}
+
+{% block title %}
+<title> Task {{ task_id }} 处理结果 </title>
+{% end %}
+
+
+{% block content %}
+
+<div style="width: 80%; margin-left: 15%; margin-top: 5%">
+    <h3>我的识别</h3>
+    <ul class="custom-list" style=" margin-top: 2%">
+        <li style="list-style: none;  padding: 10px; margin-bottom: 10px; ">
+            <button class="span_button modal-title info" style="width: 28%;font-size: 1.3rem; "> 识别文件名称 </button>
+            <button class="span_button modal-title info" style="width: 12%;font-size: 1.3rem;"> 文件类型 </button>
+            <button class="span_button modal-title info" style="width: 12%;font-size: 1.3rem;"> 材料类型 </button>
+            <button class="span_button modal-title info" style="width: 50%;font-size: 1.3rem;"> 识别结果 </button>
+<!--            <button class="span_button modal-title info" style="width: 16%;font-size: 1.3rem;"> 置信度 </button>-->
+
+        </li>
+<!--        {{ task_result }}-->
+        {% for filename, item in task_result.items() %}
+
+            <button class="modal-title  span_button" style="; width: 28%; color: #e62246cc;font-weight: normal "> {{ filename }}</button>
+            <button class="modal-title  span_button" style="width: 12%; color: #5630aac7; font-weight: normal" > {{ item["file_type"] }}</button>
+        {% if "material_type" in item %}
+            <button class="modal-title  span_button" style="width: 12%; color: #5630aac7; font-weight: normal" > {{ item["material_type"] }}</button>
+        {% else %}
+            <button class="modal-title  span_button" style="width: 12%; color: #5630aac7; font-weight: normal" > UNKNOWN </button>
+        {% end %}
+        {% if "result" in item %}
+            <button  class="modal-title  span_button" style="width: 50%; color: #5630aac7; font-weight: normal" >
+                {% if "material_type" in item %}
+                <a data-result ="{{ item['result'] }}" data-material ="{{ item['material_type'] }}" data-filename="{{ filename }}"  onclick="updateTextarea(this)" href="#json"> 点击查看 JSON 结果 </a>
+                {% else %}
+                <a data-result ="{{ item['result'] }}" data-material ="UNKNOWN" data-filename="{{ filename }}"  onclick="updateTextarea(this)" href="#json"> 点击查看 JSON 结果 </a>
+
+                {% end %}
+            </button>
+        {% else %}
+
+             <button class="modal-title  span_button" style="width: 50%; color: #5630aac7; font-weight: normal" > 非PDF类型 </button>
+
+
+        {% end %}
+
+        {% end %}
+    </ul>
+
+        <div class="text-indigo" id="json" style="margin-top: 3%">JSON结果</div>
+      <textarea id="jsonTextarea" readonly>{{ task_result }}</textarea>
+      <br>
+     <button id="saveButton" style="">保存结果</button>
+     <button id="refreshButton" class="button primary" onclick="refreshPage()">刷新页面</button>
+
+</div>
+
+
+
+
+
+
+
+
+{% end %}
+{% block js %}
+  <script>
+    function refreshPage() {
+      location.reload(); // 刷新页面
+    }
+
+    function updateTextarea(obj){
+        var filename = obj.getAttribute("data-filename");
+        var result =  obj.getAttribute("data-result");
+        var material = obj.getAttribute("data-material");
+        const jsonTextarea = document.getElementById("jsonTextarea");
+        const data = {};
+        data[filename] = filename;
+        data[result] = result;
+        data[material_type] = material;
+        jsonTextarea.value = JSON.stringify(data, null, 2);
+    }
+
+
+    // JavaScript 代码
+    document.addEventListener("DOMContentLoaded", function() {
+      // 模拟 JSON 数据，您可以将其替换为实际的 JSON 结果
+      const jsonTextarea = document.getElementById("jsonTextarea");
+      const saveButton = document.getElementById("saveButton");
+
+      // jsonTextarea.value = JSON.stringify(jsonTextarea, null, 2);
+
+      // 点击保存按钮时，将文本框内容保存到本地
+      saveButton.addEventListener("click", function() {
+        const textToSave = jsonTextarea.value;
+        const blob = new Blob([textToSave], { type: "text/plain" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "json_result.txt";
+        a.click();
+      });
+    });
+  </script>
+{% end %}

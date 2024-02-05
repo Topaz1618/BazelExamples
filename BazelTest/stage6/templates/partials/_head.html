@@ -1,0 +1,144 @@
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>File management system</title>
+
+    {% end %}
+
+
+    {#    <meta charset="utf-8">#}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:title" content="Template Monster Admin Template">
+    <meta property="og:description"
+          content="brevis, barbatus clabulares aliquando convertam de dexter, peritus capio. devatio clemens habitio est.">
+
+    <link rel="stylesheet" href="{{ static_url('components/base/base.css') }}">
+    <link rel="stylesheet" href="{{ static_url('css/base/side_bar.css') }}">
+
+    <link rel="icon" sizes="46" href="/static/images/logo/logo7.png">
+
+    {% block css %}
+
+    {% end %}
+
+
+    <style>
+        .blurb.blurb-boxed-simple.topaz {
+            border: 0.16rem solid #dde0e9;
+            border-top-right-radius: 22px;
+            border-bottom-right-radius: 22px;
+            border-bottom-left-radius: 22px;
+        }
+
+        .blurb.blurb-boxed-simple.topaz:hover {
+            border: 0.18rem solid #1c54e2;
+        }
+
+        .custom-control-text.topaz_text {
+            color: #6c757d;
+        }
+
+        ::-webkit-scrollbar-thumb:horizontal { /*水平滚动条的样式*/
+        	width: 5px;
+        	background-color: #CCCCCC;
+            {#background-color: #a4bbf9;#}
+        	-webkit-border-radius: 6px;
+        }
+        ::-webkit-scrollbar-track-piece {
+        	background-color: #fff; /*滚动条的背景颜色*/
+        	-webkit-border-radius: 0; /*滚动条的圆角宽度*/
+        }
+        ::-webkit-scrollbar {
+        	width: 10px; /*滚动条的宽度*/
+        	height: 8px; /*滚动条的高度*/
+        }
+        ::-webkit-scrollbar-thumb:vertical { /*垂直滚动条的样式*/
+        	height: 50px;
+        	background-color: #999;
+        	-webkit-border-radius: 4px;
+        	outline: 2px solid #fff;
+        	outline-offset: -2px;
+        	border: 2px solid #fff;
+        }
+
+        ::-webkit-scrollbar-thumb:hover { /*滚动条的hover样式*/
+        	height: 50px;
+        	{#background-color: #9f9f9f;#}
+            background-color:  #a4bbf9;
+        	-webkit-border-radius: 4px;
+        }
+
+
+        #cover{
+            position:absolute;left:0px;top:0px;
+            background:rgba(0, 0, 0, 0.4);
+            width:100%;  /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+            height:100%;
+            filter:alpha(opacity=60);  /*设置透明度为60%*/
+            opacity:0.6;  /*非IE浏览器下设置透明度为60%*/
+            display:none;
+            z-Index:999;
+        }
+        #modal{
+            position:absolute;
+            width: auto;
+            height: auto;
+            min-width: 600px;
+            max-width: 800px;
+            overflow: auto;
+
+            max-height: 600px;
+            top: 28%;
+            left: 28%;
+            background-color:#fff;
+            display:none;
+            cursor:pointer;
+            z-Index:9999;
+            color: #264555;
+            font-size: 26px;
+            box-shadow: 0px 34px 40px rgba(38, 69, 85, 0.06);
+            padding: 1.18125rem 1.75rem;
+        }
+
+.progress,.progress-bar {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: hidden;
+}
+
+.progress-bar {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #ffc107;
+    -webkit-transition: width .6s ease;
+    transition: width .6s ease
+}
+
+    .my-scrollable-element::-webkit-scrollbar {
+        width: 2px;
+        height: 6px;
+    }
+
+  .my-scrollable-element::-webkit-scrollbar-track {
+    background-color: #ededed;
+  }
+
+  .my-scrollable-element::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 3px;
+  }
+    </style>
+
+
+</head>

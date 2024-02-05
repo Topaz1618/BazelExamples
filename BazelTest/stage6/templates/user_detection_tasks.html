@@ -1,0 +1,223 @@
+{% extends 'layout/detection_common.html' %}
+
+
+{% block title %}
+<title> 我的识别 </title>
+{% end %}
+
+{% block content %}
+
+<div style="width: 86%; margin-left: 10.5%; margin-top: 5%">
+        <h3>我的识别</h3>
+    <ul class="custom-list" style=" margin-top: 2%">
+        <li style="list-style: none;  padding: 10px; margin-bottom: 10px; ">
+            <button class="span_button modal-title info" style="width: 28%;font-size: 1.3rem; "> Task ID </button>
+            <button class="span_button modal-title info" style="width: 18%;font-size: 1.3rem;"> 检测文件 </button>
+            <button class="span_button modal-title info" style="width: 10%;font-size: 1.3rem;"> 模型 </button>
+            <button class="span_button modal-title info" style="width: 16%;font-size: 1.3rem;"> 创建时间 </button>
+            <button class="span_button modal-title info" style="width: 11%;font-size: 1.3rem;"> 任务状态 </button>
+            <button class="span_button modal-title info" style="width: 7%;font-size: 1.3rem;"> 管理 </button>
+        </li>
+<!--        {{ task_list }}-->
+        {% for item in task_list %}
+        <li style=" padding: 10px; margin-bottom: 10px;   ">
+            {% if item["task_status"] == 3 %}
+                <button class="modal-title  span_button" onmouseover="showTooltip(this)" onmouseout="hideTooltip(this)" style="width: 26%; font-weight: normal">
+                    <a href="/single_detection_task?task_id={{item['task_id']}}" >{{ item["task_id"] }}</a>
+                </button>
+            {% else %}
+                <button class="modal-title  span_button" disabled style="cursor: not-allowed; width: 26%; font-weight: normal">{{ item["task_id"] }}</button>
+            {% end %}
+
+            <button class="modal-title  span_button" style="; width: 20%; color: #e62246cc;font-weight: normal "> {{ item["detect_folder"] }}</button>
+            <button class="modal-title  span_button" style="width: 12%; color: #5630aac7; font-weight: normal" > {{ item["model"] }}</button>
+            <button class="modal-title  span_button" style="width: 16%; color: #5630aac7; font-weight: normal" > {{ item["create_time"] }}</button>
+
+            {% if item["task_status"] == 1 %}
+                        <button class="span_confirm" disabled style="width: 12% !important;" > PENDING </button>
+
+            {% elif item["task_status"] == 2 %}
+                        <button class="span_confirm" disabled style="width: 12% !important;" > IN_PROGRESS </button>
+
+            {% elif item["task_status"] == 3 %}
+                        <button class="span_confirm" disabled style="width: 12% !important;" > COMPLETED</button>
+
+            {% elif item["task_status"] == 4 %}
+                        <button class="span_confirm" disabled style="width: 12% !important;"> FAILED </button>
+            {% elif item["task_status"] == 5 %}
+                        <button class="span_confirm" disabled style="width: 12% !important;" > CANCELLED </button>
+            {% end %}
+
+            <button class="span_confirm"  style="" onclick="DeleteDetectionTask(this)" data-task-id="{{ item['task_id'] }}" >
+                <span class="mdi-delete"></span>
+            </button>
+
+        </li>
+        {% end %}
+    </ul>
+</div>
+{% end %}
+
+{% block js %}
+<script src="/static/task/js/jquery-3.6.0.min.js"></script>
+<script src="/static/task/js/crypto-js.min.js"></script>
+<script>
+
+    const secretKey = 'YourSecretKey123'; // Replace this with your secret key
+    function showTooltip(element) {
+        var tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        tooltip.innerHTML = '点击查看结果';
+        element.appendChild(tooltip);
+        element.addEventListener('mousemove', function (e) {
+            tooltip.style.left = e.clientX + 'px';
+            tooltip.style.top = e.clientY + 100 + 'px';
+        });
+        tooltip.style.display = 'block';
+
+    }
+
+    function hideTooltip(element) {
+        var tooltip = element.querySelector('.tooltip');
+        if (tooltip) {
+            tooltip.style.display = 'none';
+            element.removeChild(tooltip);
+        }
+    }
+
+    function decryptData(encryptedData) {
+        var key = CryptoJS.enc.Utf8.parse(secretKey);
+        var ciphertext = CryptoJS.enc.Base64.parse(encryptedData);
+
+        // Get the IV by taking the first 16 bytes
+        var iv = ciphertext.clone();
+        iv.sigBytes = 16; // Set IV length to 16 bytes
+        iv.clamp(); // Remove ciphertext leaving only IV'
+        console.log("ciphertext", ciphertext)
+        console.log("iv", iv)
+        console.log("ciphertext", ciphertext)
+
+        ciphertext.words.splice(0, 4); // Remove IV from ciphertext
+        ciphertext.sigBytes -= 16; // Adjust ciphertext length
+        console.log("ciphertext2", ciphertext)
+
+        // Perform decryption
+        var decrypted = CryptoJS.AES.decrypt({ ciphertext: ciphertext }, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7});
+
+        const decryptedData = new Uint8Array(decrypted.sigBytes);
+        for (let i = 0; i < decrypted.sigBytes; i++) {
+            decryptedData[i] = decrypted.words[i >>> 2] >>> (24 - (i % 4) * 8) & 0xff;
+        }
+
+        return decryptedData;
+    }
+
+
+    function UpdateProcessBar(chunk, chunks) {
+        let percentage = (chunk / chunks) * 100;
+        percentage = percentage.toFixed(2);
+        var progressBarFill = document.getElementById("progress-bar-fill");
+        progressBarFill.style.width = percentage + "%";
+        progressBarFill.innerHTML = percentage + "%";
+
+    }
+
+    function UpdateProcessBarFull(){
+        var percentage = 100
+        var progressBarFill = document.getElementById("progress-bar-fill");
+        progressBarFill.style.width = percentage + "%";
+        progressBarFill.innerHTML = percentage + "%";
+    }
+
+
+    function DownloadFile(obj){
+        console.log(obj.getAttribute("data-dataset-name"), obj.getAttribute("data-username"))
+
+
+        var slices = [];
+        var dataset_name = obj.getAttribute("data-dataset-name");
+        var username = obj.getAttribute("data-username");
+        var total_chunks = obj.getAttribute("data-chunks");
+        var filename = obj.getAttribute("data-filename")
+
+
+        var fileUrl = `download_dataset?dataset_name=${dataset_name}&username=${username}`;
+
+        function downloadChunk(ChunkNumber) {
+        $.ajax({
+            url: fileUrl,
+            type: 'GET',
+            headers: {
+                'X-Chunk-Number': ChunkNumber,
+            },
+            processData: false,
+            success: function (chunk) {
+                chunk = chunk.split("==== End Encryption ====")[0];
+                console.log("chunk length", chunk.length, chunk, "idx:", ChunkNumber)
+                var decryptedData = decryptData(chunk);
+                console.log("Decrypted data length:", decryptedData.length);
+
+                slices.push(decryptedData);
+
+                ChunkNumber += 1;
+
+                if (ChunkNumber < total_chunks) {
+                    downloadChunk(ChunkNumber);
+                    UpdateProcessBar(ChunkNumber, total_chunks);
+                } else {
+                    UpdateProcessBarFull();
+
+                    var blob = new Blob(slices, {type: 'application/octet-stream'});
+                    var url = window.URL.createObjectURL(blob);
+                    var a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+
+                }
+            }
+        });
+        }
+
+        downloadChunk(0)
+    }
+
+    function DeleteDetectionTask(obj){
+        console.log("!!!!! DeleteDetectionTask");
+        var task_id = obj.getAttribute("data-task-id");
+
+        var formData = new FormData();
+
+        // 将数据添加到 FormData
+        formData.append('task_id', task_id);
+        console.log("task_id", task_id)
+
+        // 发送 FormData 到后端
+        fetch('/user/delete_detection_task', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          // 处理响应
+          console.log('FormData 已发送到后端');
+            if (response.status === 200) {
+              // 刷新页面
+              window.location.reload();
+            }
+        })
+        .catch(error => {
+          // 错误处理
+          console.error('发送 FormData 到后端时出错:', error);
+        });
+
+    }
+
+</script>
+
+{% end %}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "../partials/_head.html" %}
+
+<body>
+{% block pop %}
+    {# pop up window  #}
+{% end %}
+
+<div class="page" style="background-color: white">
+    <!--RD Navbar-->
+
+    {# Header #}
+    {% include "../partials/_header.html" %}
+
+    {# Body #}
+    {% block content %}
+        {# Content #}
+    {% end %}
+
+
+    {% block paging %}
+{#        paging #}
+
+
+    {% end  %}
+
+
+     {# Footer #}
+    {% include "../partials/_footer.html" %}
+</div>
+
+{# Preloader #}
+{% include "../partials/_preloader.html" %}
+
+
+
+
+</body>
+</html>
+
+
+
+
+<script src="{{ static_url('components/base/core.min.js') }}"></script>
+<script src="{{ static_url('components/base/script.js') }}"></script>
+<script src="/static/js/jquery.min.js"></script>
+
+{% block js %}
+    {# Content #}
+{% end %}
+
+
+<script type="text/javascript">
+    {#var BlockSize = 1024 * 1024;#}
+    {#var BlockSize = 1024 * 10;#}
+    {#var BlockSize = 2;#}
+
+    var file_system_header = document.getElementById("file_system_header");
+    var file_system_title = document.getElementById("file_system_title");
+    var file_system_phone = document.getElementById("file_system_phone");
+    var option = {
+        attributes: true,
+        attributeFilter: ['class']
+    };
+
+    function get_cookie(){
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+
+        return cookie.split('=')[1]
+    }
+
+
+
+
+    var mutationObserver = new MutationObserver(function (mutations) {
+        if (file_system_header.className.indexOf('rd-navbar-fixed') != -1){
+            file_system_title.style.display = "None";
+            if (file_system_phone != null){
+                file_system_phone.style.display = "Block";
+
+            }
+        }else{
+            file_system_title.style.display = "Block";
+            if (file_system_phone != null) {
+                file_system_phone.style.display = "None";
+            }
+        }
+    });
+
+    mutationObserver.observe(file_system_header, option)
+
+
+</script>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>WebSocket Page</title>
+    <link rel="stylesheet" href="/static/task/css/task.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="myModal" class="modal" style="">
+    <div class="modal-header">
+        <span class="modal-title primary">Notification</span>
+        <span class="modal-close" onclick="closeModal()">X</span>
+    </div>
+    <p id="pop_msg"></p>
+    <div class="modal-buttons">
+        <button class="modal-button success" onclick="closeModal()">Confirm</button>
+        <button class="modal-button grey" onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+
+<!--    <button id="openModal" onclick="openModal()" >Click me</button>-->
+<div id="task_container">
+    <div id="task_desc">
+        <div style="width: 500px">
+        <span class="task_id_title">Task ID: </span>
+        <span id="task_id">{{ task_id }}</span>
+        </div>
+
+        <div style="width: 300px">
+            <span class="task_status_title">Task Status: </span>
+            <span id="task_status" style="display: inline-block">{{ task_info["status"] }}</span>
+        </div>
+
+
+        {% if task_info["status"] == 1 or task_info["status"] == 2 %}
+            <button id="cancel_task_btn" style="margin-left: -9px;" onclick="CancelTask()">取消任务</button>
+        {% end %}
+
+    </div>
+
+    <div id="progress_bar_title">Progress</div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar">
+            <div class="progress-bar-fill" id="progress-bar-fill" data-progress="{{ progress }}"></div>
+        </div>
+    </div>
+
+    {% if task_info["status"] == 3 or task_info["status"] == 4 or task_info["status"] == 5 %}
+        <div class="log-title">Task output details </div>
+    {% else %}详细
+        <div class="log-title">Task output</div>
+    {% end %}
+    <div class="message-container" id="messages">
+
+        {% if task_info["status"] == 3 or task_info["status"] == 4 or task_info["status"] == 5 %}
+            {% for log in task_info["log"] %}
+                <span>{{ log }}</span>
+            {% end %}
+        {% end %}
+    </div>
+</div>
+
+
+<script src="/static/task/js/task.js"></script>
+<script>
+
+const socket = new WebSocket("ws://" + window.location.host + "/detect/wsprogress");
+const messagesDiv = document.getElementById("messages");
+
+
+function HideCancelTaskBtn(){
+    var cancel_task_btn = document.getElementById("cancel_task_btn")
+
+    if (cancel_task_btn != null){
+        cancel_task_btn.style.display = "none";
+    }
+}
+
+function UpdatePopUpWindowMessage(msg){
+    var pop_msg = document.getElementById("pop_msg");
+    pop_msg.innerText = msg;
+}
+
+function CancelTask() {
+    var task_id = document.getElementById("task_id").innerText;
+
+    var formData = new FormData();
+    formData.append("task_id", task_id);
+
+    fetch("/detect/cancel_task", {
+      method: "POST",
+      body: formData,
+    })
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to submit task.");
+        }
+      })
+      .then(function (data) {
+        if (data.status === "success") {
+              console.log(data)
+        } else {
+              console.log(data)
+
+        }
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
+
+}
+
+function WebSocketSession(){
+    socket.onopen = event => {
+        console.log("WebSocket connection opened");
+        const data = {
+          "task_id": window.location.pathname.split("/")[3],
+        };
+
+        var jsonData = JSON.stringify(data);
+        socket.send(jsonData);
+
+    };
+
+    socket.onmessage = event => {
+        var response = event.data;
+        console.log(response, typeof response);
+        var jsonData = JSON.parse(response);
+        var status = jsonData["status"];
+
+        console.log(jsonData)
+
+        updateProgressBar(jsonData["progress"]);
+        updateTaskStatusDiv(status);
+
+        var span_tag = document.createElement("span_tag")
+        span_tag.innerText = jsonData["log"] +"\n"
+        span_tag.style.display = "block";
+        span_tag.style.marginBottom = "10px";
+
+
+        messagesDiv.appendChild(span_tag);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        if (status === TaskStatus.FAILED.value || status === TaskStatus.CANCELLED.value){
+            updateProgressBarFailed();
+            HideCancelTaskBtn()
+            socket.close()
+
+        }else if(status === TaskStatus.COMPLETED.value){
+            HideCancelTaskBtn()
+            socket.close()
+        }
+    };
+        socket.onclose = event => {
+            console.log("WebSocket connection closed");
+    };
+}
+
+
+function CheckTaskStatus(){
+     var task_status = document.getElementById("task_status").innerText;
+     if (task_status == TaskStatus.COMPLETED.value ){
+         console.log("No websocket", task_status, );
+         updateProgressBar(100);
+         updateTaskStatusDiv(task_status);
+
+     }else if( task_status == TaskStatus.FAILED.value || task_status == TaskStatus.CANCELLED.value){
+
+         var current_progress = document.getElementById("progress-bar-fill").getAttribute("data-progress");
+         updateProgressBar(current_progress);
+         updateProgressBarFailed();
+         updateTaskStatusDiv(task_status);
+     }else{
+         ConvertIntToText();
+         WebSocketSession();
+     }
+
+}
+
+CheckTaskStatus()
+
+
+
+</script>
+</body>
+</html>

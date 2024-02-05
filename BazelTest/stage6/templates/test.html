@@ -1,0 +1,96 @@
+{% extends 'layout/chat_common.html' %}
+
+
+{% block content %}
+<div id="messages" style="margin-bottom: 155px;">
+
+</div>
+
+{% end  %}
+
+
+
+{% block send_box %}
+
+<div  style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: white;     z-index: 9999;">
+<div class="formbold-main-wrapper">
+  <div class="formbold-email-subscription-form" style=" width: 100%; border: 1px solid #DDE3EC; border-radius: 30px;">
+    <textarea style="border-radius: 30px; height: 46px; overflow-y: auto;" name="chat_input" id="chat_input" placeholder="Send a message" class="formbold-form-input"></textarea>
+
+    <button id="sendButton" class="formbold-btn" style=" margin-top: 3px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="h-4 w-4 m-1 md:m-0" stroke-width="2">
+        <path d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z" fill="currentColor"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+</div>
+
+{% end %}
+
+{% block js %}
+<script src="/static/highlight/highlight.min.js"></script>
+<script src="/static/js/chat.js"></script>
+
+<script>
+    // Initialize and trigger syntax highlighting
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('pre code').forEach(function (block) {
+            hljs.highlightBlock(block);
+        });
+    });
+
+    // Add copy code functionality
+    function copyContent(obj) {
+        var CodeToCopy = obj.parentNode.parentNode.querySelector("code");
+        var content = CodeToCopy.innerText;
+
+        navigator.clipboard.writeText(content)
+            .then(function () {
+                var originalText = obj.innerHTML;
+
+                obj.innerHTML = "✔️ Copied";
+                obj.style.height = "26px"
+                obj.style.lineHeight = "20px";
+                setTimeout(function () {
+                    obj.innerHTML = originalText;
+                }, 2000); // 2秒后恢复原始文本
+            })
+            .catch(function (error) {
+                console.error('复制失败：', error);
+            });
+    }
+
+    const textarea = document.getElementById('chat_input');
+    const div = document.querySelector('.formbold-email-subscription-form');
+
+    textarea.addEventListener('input', function() {
+
+      if (textarea.value.length == 0){
+          textarea.style.height = "";
+          div.style.height = "";
+      }else{
+
+
+      textarea.style.height = 'auto';
+      div.style.height = 'auto';
+
+      const textareaHeight = textarea.scrollHeight;
+      const maxHeight = 122;
+
+      if (textareaHeight > maxHeight) {
+        textarea.style.height = `${maxHeight -2}px`;
+        div.style.height = `${maxHeight}px`;
+        textarea.style.overflowY = 'scroll';
+      } else {
+        textarea.style.height = "48px";
+        div.style.height = "";
+      }
+
+      }
+
+    });
+
+
+</script>
+{% end  %}

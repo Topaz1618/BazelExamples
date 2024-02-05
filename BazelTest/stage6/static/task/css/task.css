@@ -1,0 +1,753 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 6px;
+}
+
+/* Handle on active state */
+::-webkit-scrollbar-thumb:active {
+    background: #bbb;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f5f5f5;
+}
+
+/* Handle when it's dragged */
+::-webkit-scrollbar-thumb:vertical {
+    border: 2px solid #fff;
+    background-color: #aaa;
+}
+
+/* Handle on hover when it's vertical */
+::-webkit-scrollbar-thumb:vertical:hover {
+    background-color: #ccc;
+}
+
+/* Track when it's vertical */
+::-webkit-scrollbar-track:vertical {
+    border: 1px solid #eee;
+}
+
+/* Corner */
+::-webkit-scrollbar-corner {
+    background: #f5f5f5;
+}
+
+#task_container {
+    /*width: 60%;*/
+    margin-left: 3.2%;
+
+}
+
+#task_desc {
+    display: flex;
+    /*flex-direction: column;*/
+    align-items: center;
+    /*text-align: center;*/
+}
+
+#task_id {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #2ecc71; /* Emerald Green background color */
+    color: #fff; /* White text color */
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow for depth */
+    transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    margin-bottom: 10px;
+    margin-left: 1.1%;
+}
+
+#task_id span {
+    margin-left: 10px;
+    font-weight: normal;
+
+}
+
+#task_id:hover {
+    background-color: #27ae60; /* Darker shade on hover */
+}
+
+#task_status {
+    margin-left: 1%;
+    display: inline-block;
+    padding: 9px 15px;
+    border-radius: 9px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+
+}
+
+/* Define styles for different statuses */
+#task_status.cancelled {
+    background-color: #f39c12; /* Orange */
+    color: #fff;
+}
+
+#task_status.in_progress {
+    background-color: #3498db; /* Blue */
+    color: #fff;
+}
+
+#task_status.completed {
+    background-color: #2ecc71; /* Green */
+    color: #fff;
+}
+
+#task_status.failed {
+    background-color: #e74c3c; /* Red */
+    color: #fff;
+}
+
+#task_status.timeout {
+    background-color: #7f8c8d; /* Gray */
+    color: #fff;
+}
+
+#task_status.retrying {
+    background-color: #e67e22; /* Orange */
+    color: #fff;
+}
+
+#task_status.pending {
+    background-color: #9b59b6; /* Purple */
+    color: #fff;
+}
+
+#task_status:hover {
+    filter: brightness(90%);
+}
+
+
+
+#progress_bar_title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.progress-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 92%;
+    /*margin: 0 auto;*/
+    background-color: #f3f3f3;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+}
+
+.message-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    /*max-width: 600px;*/
+    min-width: 600px;
+    max-width: 92.8%;
+    max-height: 800px;
+    overflow-x: auto;
+}
+
+.message-container span {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.log-title {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.task_status_title {
+    /*margin-top: 20px;*/
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+    /*margin-bottom: 10px;*/
+}
+
+
+ .task_id_title {
+    /*margin-top: 20px;*/
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    /*margin-bottom: 10px;*/
+}
+
+
+.span_button {
+   display: inline-block;
+   padding: 10px;
+   margin-right: 5px;
+   margin-bottom: 5px;
+   border-radius: 5px;
+   background-color: #fff;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+
+   text-overflow: ellipsis; /* 超出部分显示省略号 */
+   white-space: nowrap; /* 不换行 */
+   overflow: hidden; /* 隐藏溢出部分 */
+}
+
+.span_button:hover {
+
+    color: #9b59b6!important;
+    /*color: #aaa!important; !* 悬停时的颜色 *!*/
+}
+
+
+.span_confirm {
+    background-color: #fff;
+    color: #9C27B0;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    max-width: 400px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.modal-title  {
+    font-size: 18px;
+    font-weight: bold;
+    color: #e67e22; /* Orange color for the title */
+}
+
+.modal-title.dark_orange  {
+    font-size: 18px;
+    font-weight: bold;
+    color: #FF7F50; /* Orange color for the title */
+}
+
+.modal-title.light_orange  {
+    font-size: 18px;
+    font-weight: bold;
+    color: #FFA500; /* Orange color for the title */
+}
+
+
+.modal-title.success {
+    color: #2ecc71; /* White text color */
+}
+.modal-title.primary {
+    color: #9b59b6; /* White text color */
+}
+
+.modal-title.info {
+    color: #aaa; /* White text color */
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.modal-title.blue{
+   color: #007bff;
+}
+
+.modal-title.warning {
+
+    color: #e67e22; /* White text color */
+}
+
+.modal-title.grey {
+    color: #7f8c8d; /* White text color */
+}
+
+.modal-title.danger {
+    color: #e74c3c; /* White text color */
+}
+
+.modal-close {
+    cursor: pointer;
+    font-size: 20px;
+    color: #aaa;
+}
+
+.modal-close:hover {
+    color: #555;
+}
+
+.modal-content {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.custom-list {
+    padding: 0;
+}
+
+.custom-list li::marker {
+    color: #4CAF50; /* 修改圆点颜色为蓝色 */
+    /*color: #2ecc71;*/
+
+ }
+
+
+/*button {*/
+/*    padding: 10px 20px;*/
+/*    background-color: #9b59b6; !* Purple background color *!*/
+/*    color: #fff; !* White text color *!*/
+/*    border: none;*/
+/*    border-radius: 9px;*/
+/*    cursor: pointer;*/
+/*    font-size: 14px;*/
+/*    transition: background-color 0.3s ease;*/
+/*    margin-bottom: 10px;*/
+/*    letter-spacing: 1px;*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*button:hover {*/
+/*    background-color: #8e44ad; !* Darker shade on hover *!*/
+/*}*/
+
+.button.success {
+    background-color: #2ecc71; /* Green background color */
+    color: #fff; /* White text color */
+}
+.button.primary {
+    background-color: #9b59b6; /* Purple background color */
+    color: #fff; /* White text color */
+}
+.button.primary:hover {
+    background-color: #8e44ad; /* Darker purple on hover */
+}
+.button.warning {
+    background-color: #e67e22; /* Purple background color */
+    color: #fff; /* White text color */
+}
+
+.button.grey {
+    background-color: #7f8c8d; /* Gray background color */
+    color: #fff; /* White text color */
+}
+
+.button.danger {
+    background-color: #e74c3c; /* Red background color */
+    color: #fff; /* White text color */
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.modal-button.success {
+    background-color: #2ecc71; /* Green background color */
+    color: #fff; /* White text color */
+}
+.modal-button.primary {
+    background-color: #9b59b6; /* Purple background color */
+    color: #fff; /* White text color */
+}
+
+.modal-button.warning {
+    background-color: #e67e22; /* Purple background color */
+    color: #fff; /* White text color */
+}
+
+.modal-button.grey {
+    background-color: #7f8c8d; /* Gray background color */
+    color: #fff; /* White text color */
+}
+
+.modal-button.danger {
+    background-color: #e74c3c; /* Red background color */
+    color: #fff; /* White text color */
+}
+
+
+.bg-red {
+    background-color: #e74c3c!important
+}
+
+
+.bg-blue {
+    background-color: rgba(13,110,253,.75)!important
+}
+
+.bg-green {
+    background-color: green!important
+}
+
+.bg-indigo {
+    background-color: rgba(102,16,242,.75)!important
+}
+
+.bg-purple {
+    background-color: rgba(111,66,193,.75)!important
+}
+
+.bg-pink {
+    background-color: rgba(214,51,132,.75)!important
+}
+
+.bg-orange {
+    background-color: rgba(253,126,20,.75)!important
+}
+
+.bg-yellow {
+    background-color: rgba(255,193,7,.75)!important
+}
+
+.bg-teal {
+    background-color: rgba(32,201,151,.75)!important
+}
+
+.bg-cyan {
+    background-color: rgba(13,202,240,.75)!important
+}
+
+.bg-grey {
+    background-color: #7f8c8d!important
+}
+
+.text-blue {
+    color: #0d6efd!important
+}
+
+.text-indigo {
+    color: #6610f2!important
+}
+
+.text-purple {
+    color: #6f42c1!important
+}
+
+.text-pink {
+    color: #d63384!important
+}
+
+.text-orange {
+    color: #fd7e14!important
+}
+
+.text-yellow {
+    color: #ffc107!important
+}
+
+.text-teal {
+    color: #20c997!important
+}
+
+.text-cyan {
+    color: #0dcaf0!important
+}
+
+
+.badge_node {
+     display: inline-block;
+     padding:.35em .65em;
+     font-size: .85em;
+     margin-left: 10px;
+     font-weight:700;
+     line-height:1;
+     color:#fff;
+     text-align:center;
+     white-space:nowrap;
+     vertical-align:baseline;
+     border-radius:.8rem;
+}
+
+
+/*body {*/
+/*    font-family: Arial, sans-serif;*/
+/*    padding: 20px;*/
+/*}*/
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+input[type="text"], input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+
+#response {
+    margin-top: 20px;
+    font-weight: bold;
+    margin-bottom: 17px;
+}
+.status-container {
+    display: flex;
+    align-items: center;
+}
+
+.status-label {
+    margin-right: 10px;
+    /*color: #e67e22; !* Orange color for labels *!*/
+    color: #7f8c8d;
+}
+
+.status-value {
+    border: 2px solid #e67e22;
+    border-radius: 20px;
+    padding-top: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 1px;
+    margin-right: 10px;
+    background-color: #f39c12;
+    color: #fff;
+}
+
+
+.status-value.inactive {
+    border: 2px solid #7f8c8d;
+    border-radius: 20px;
+    padding-top: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 1px;
+    margin-right: 10px;
+    background-color: #7f8c8d;
+    color: #fff;
+}
+
+
+.status-value.active {
+    border: 2px solid #2ecc71;
+    border-radius: 20px;
+    padding-top: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 1px;
+    margin-right: 10px;
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+
+
+.tooltip {
+    position: absolute;
+    background-color: rgba(127, 140, 141, 0.56); /* Soft Green color for the tooltip */
+    color: #fff; /* White text color */
+    padding: 5px;
+    border-radius: 5px;
+    /*display: none;*/
+    font-size: 14px;
+    white-space: nowrap; /* Prevent tooltip text from wrapping */
+    z-index: 1000; /* Ensure the tooltip is above other elements */
+    box-shadow: 0 0 10px;
+    display: block;
+    width: 90px;
+}
+.dropdown-content {
+    display: none;
+    /*position: absolute;*/
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ddd;
+    z-index: 1;
+    border-radius: 8px;
+    padding: 12px;
+    min-width: 200px; /* Adjust the width as needed */
+    width: 66%;
+    margin-top: 0.8%;
+    min-height: 110px;
+    height: auto;
+    overflow-y: auto;
+}
+
+.dropdown-content button {
+    /*margin-top: 45px;*/
+    display: inline-block;
+    width: 90px;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    background-color: #4CAF50;
+    /*background-color: rgba(111,66,193,.75)!important;*/
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 2px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    float: right;
+    margin-left: 10px;
+}
+
+.dropdown-content button.close {
+    background-color: #aaa;
+}
+
+.dropdown-content button.close:hover {
+    background-color: #7f8c8d;
+}
+
+
+.dropdown-content button:last-child {
+    margin-bottom: 0; /* Remove margin for the last button */
+}
+
+.dropdown-content button:hover {
+    background-color: #555; /* Darker blue color on hover */
+}
+
+.prettify-button {
+    background-color: #27ae60; /* Green color for prettify button */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.details-content{
+    max-height: 106px;
+    overflow-y: auto;
+}
+
+.training_container {
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+
+.form-field {
+    margin-bottom: 20px;
+}
+.form-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.form-field select,
+.form-field input[type="number"],
+.form-field input[type="text"] {
+    width: 96%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.form-field button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+#jsonTextarea {
+  width: 88%;
+  min-height: 215px;
+  max-height: 440px; /* 设置最大高度 */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* 自动显示纵向滚动条 */
+  transition: border-color 0.3s ease; /* 边框颜色过渡效果 */
+}
+#jsonTextarea:focus {
+  border-color: #ff6347; /* 聚焦时的边框颜色 */
+}
+#saveButton {
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #4CAF50; /* 橙色 */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#saveButton:hover {
+  background-color:#7f8c8d ; /* 橙色 - hover */
+}

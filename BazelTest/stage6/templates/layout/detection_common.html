@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "../partials/_detection_head.html" %}
+
+<body>
+<div class="page">
+    <!--RD Navbar-->
+
+    {# Header #}
+    {% include "../partials/_detection_header.html" %}
+
+    {# Body #}
+    {% block content %}
+        {# Content #}
+    {% end %}
+
+     {# Footer #}
+
+</div>
+{% include "../partials/_detection_footer.html" %}
+{# Preloader #}
+{% include "../partials/_preloader.html" %}
+
+
+</body>
+</html>
+<!--{{ static_url('components/base/core.min.js') }}-->
+
+<script src="{{ static_url('components/base/core.min.js') }}"></script>
+<script src="{{ static_url('components/base/script.js') }}"></script>
+<script src="{{ static_url('js/jquery.min.js') }}"></script>
+{% block js %}
+    {# Content #}
+{% end %}
+
+
+<script type="text/javascript">
+    var file_system_header = document.getElementById("file_system_header");
+    var file_system_title = document.getElementById("file_system_title");
+    var file_system_phone = document.getElementById("file_system_phone");
+    var option = {
+        attributes: true,
+        attributeFilter: ['class']
+    };
+
+    var mutationObserver = new MutationObserver(function (mutations) {
+        if (file_system_header.className.indexOf('rd-navbar-fixed') != -1){
+            file_system_title.style.display = "None";
+            if (file_system_phone != null){
+                file_system_phone.style.display = "Block";
+
+            }
+        }else{
+            file_system_title.style.display = "Block";
+            if (file_system_phone != null) {
+                file_system_phone.style.display = "None";
+            }
+        }
+    });
+
+    mutationObserver.observe(file_system_header, option)
+
+
+</script>
